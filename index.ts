@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express"
+import morgan from "morgan";
 import db from "./src/config/db";
 import cors from "cors"
 import { router } from "./src/routes";
@@ -6,6 +7,7 @@ const app = express()
 const port = 3000
 
 app.use(cors());
+app.use(morgan("dev"))
 app.use(express.json())
 app.use("/", router)
 app.get('/', (req: Request, res: Response) =>

@@ -2,5 +2,5 @@ export interface User {
     userName: string;
     email: string;
     password: string;
-    birthdate: number;
+    birthdate: string;
 }
