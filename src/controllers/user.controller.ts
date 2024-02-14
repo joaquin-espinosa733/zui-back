@@ -21,7 +21,7 @@ const registerUser = async ({ userName, password, email, birthdate }: User) => {
 const userLogin = async ({ email, password }: LoginUser) => {
     const checkIs = await UserModel.findOne({ email });
     if (!checkIs) {
-        return { success: false, message: "corrreo electronico incorrecto" }
+        throw new Error("Correo electronico incorrecto")
     };
     const passworfHash = checkIs.password;
     const isCorrectPassword = await verified(password, passworfHash);
