@@ -1,6 +1,6 @@
-import { User } from "../interface/user.interface"
+import { LoginUser, User } from "../interface/user.interface"
 import UserModel from "../models/user"
-import { encrypt } from "../utils/encriptado";
+import { encrypt, verified } from "../utils/encriptado";
 
 
 const registerUser = async ({ userName, password, email, birthdate }: User) => {
@@ -18,4 +18,18 @@ const registerUser = async ({ userName, password, email, birthdate }: User) => {
 }
 
 
-export { registerUser }
+const userLogin = async ({ email, password }: LoginUser) => {
+    const checkIs = await UserModel.findOne({ email });
+    if (!checkIs) {
+        return { success: false, message: "corrreo electronico incorrecto" }
+    };
+    const passworfHash = checkIs.password;
+    const isCorrectPassword = await verified(password, passworfHash);
+    if (!isCorrectPassword) {
+        throw new Error("Contraseña incorrecta");
+    }
+    const { _id, userName } = checkIs;
+    return { success: true, _id, userName, email };
+}
+
+export { registerUser, userLogin }
